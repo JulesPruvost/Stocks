@@ -1,0 +1,54 @@
+#
+#  Use the following format:
+#  categories:
+#   <category_name_1>:
+#     <slot>:
+#     <display>:
+#     <block_1>:
+#        initial_amount: x
+#        buy_price: y
+#        sell_price: z
+#     <block_2>:
+#        initial_amount: x
+#        buy_price: y
+#        sell_price: z
+#        data: 5
+#   <category_name_1>:
+#     <slot>:
+#     <display>:
+#     <block_1>:
+#        initial_amount: x
+#        buy_price: y
+#        sell_price: z
+#        command: say test
+#     <block_2>:
+#        initial_amount: x
+#        buy_price: y
+#        sell_price: z
+#
+#    ATTENTION: If there is command, the command will be executed instead of giving the item. The item with commands will also be unavailable for players to sell
+#    /////////  You can add 'data' to specify data for an item, like wool color or stained glass pane color
+limited_shop:
+  restock_rate_in_minutes: 720
+  categories:
+    Blocks:
+      COLOR: '&a'
+      SLOT: 10
+      DISPLAY: grass
+      Dirt:
+        initial_amount: 150
+        buy_price: 10.0
+        sell_price: 8.0
+      Glass:
+        initial_amount: 200
+        buy_price: 15.0
+        sell_price: 12.0
+    Decoration:
+      COLOR: '&c'
+      SLOT: 12
+      DISPLAY: flower_pot
+      Torch:
+        initial_amount: 250
+        buy_price: 16.0
+        sell_price: 11.0
+        command: say given <player> <amount> torches

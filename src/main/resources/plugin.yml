@@ -1,0 +1,9 @@
+name: Stocks
+version: '${project.version}'
+main: me.gamendecat.stocks.Stocks
+api-version: 1.18
+authors: [ GamendeCat, Mark ]
+description: Stocks
+depend: [Vault]
+commands:
+  shop:

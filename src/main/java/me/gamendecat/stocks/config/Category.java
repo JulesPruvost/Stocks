@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Category {
+
+    public String color;
+
     public ItemStack display;
 
     public String name;

@@ -23,6 +23,10 @@ public class StocksCMD implements CommandExecutor {
         if(arg3.length > 0) {
             for(Category cat : ConfigManager.cat) {
                 if(cat.name.equalsIgnoreCase(arg3[0])) {
+                    if(!arg0.hasPermission("shop." + cat.name)) {
+                        arg0.sendMessage("§cNo permission!");
+                        return true;
+                    }
                     InventoryManager.createCatMap((Player)arg0, cat);
                     return true;
                 }

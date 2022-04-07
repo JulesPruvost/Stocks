@@ -46,17 +46,17 @@ public class ConfigManager {
             Bukkit.getConsoleSender().sendMessage("" + s + " created.");
             ConfigurationSection sec = Stocks.instance.getConfig()
                     .getConfigurationSection("limited_shop.categories." + s);
-            String color = Stocks.instance.getConfig().getString("limited_shop.categories." + s + ".COLOR")
+            String colorr = Stocks.instance.getConfig().getString("limited_shop.categories." + s + ".COLOR")
                     .replaceAll("&", "§");
+            category.color = colorr;
             for (String l : sec.getKeys(false)) {
                 if (l.equalsIgnoreCase("SLOT")) {
                     category.slot = sec.getInt(l);
                     continue;
                 }
                 if (l.equalsIgnoreCase("DISPLAY")) {
-                    System.out.println(sec.getString(l).toUpperCase());
                     category.display = ib.mat(Material.getMaterial(sec.getString(l).toUpperCase()))
-                            .name(color + category.name);
+                            .name(colorr + category.name);
                     continue;
                 }
                 if (!l.equalsIgnoreCase("COLOR")) {

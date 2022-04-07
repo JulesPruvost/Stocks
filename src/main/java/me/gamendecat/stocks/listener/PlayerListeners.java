@@ -133,8 +133,8 @@ public class PlayerListeners implements Listener {
                                 Sound.BLOCK_ANVIL_LAND, 0.7F, 2.0F);
                         return;
                     }
-                    Inventory confirm = Bukkit.createInventory(null, 54, "§7§l" + (buy ? "Buying" : "Selling") + " (§a" +
-                            wrp.handle.getType().name().replaceAll("_", "") + "§7§l) §7- §a" + cat.name);
+                    Inventory confirm = Bukkit.createInventory(null, 54, "§8§l" + (buy ? "Buying (§2" : "Selling (§c") +
+                            wrp.handle.getType().name().replaceAll("_", "") + "§8§l) §7- " + cat.color + cat.name);
                     confirm.setContents(this.example.getContents());
                     int i = wrp.handle.getMaxStackSize();
                     confirm.setItem(15, ib.mat(Material.LIME_STAINED_GLASS_PANE).name("§a§lSet to " + i)
@@ -146,7 +146,7 @@ public class PlayerListeners implements Listener {
                                 new String[] { "§c▌  §7Sell all for:" + ((ii > 0.0D) ? (new StringBuilder(FriendlyFormat.format(ii))).toString() : "-") }));
                                 }
                                 ib ib = me.gamendecat.stocks.utils.ib.mat(Material.PLAYER_HEAD).name("§a§nYour stats")
-                                        .lore("§a▌  §7Current balance: + §a§l$§a" +
+                                        .lore("§a▌  §7Wallet: + §a§l$§a" +
                                                 FriendlyFormat.format(Stocks.econ.getBalance((OfflinePlayer)event.getWhoClicked())));
                         InventoryManager.setHeadSkin((ItemStack)ib,
                                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTM2ZTk0ZjZjMzRhMzU0NjVmY2U0YTkwZjJlMjU5NzYzODllYjk3MDlhMTIyNzM1NzRmZjcwZmQ0ZGFhNjg1MiJ9fX0=");
@@ -157,10 +157,10 @@ public class PlayerListeners implements Listener {
                                                 .lore(new String[] { " ", buy ? ("§a▌ §7Buy Price: §a§l$§a" + FriendlyFormat.format(wrp.buyprice)) : (
                                                         "§c▌ §7Sell Price: §c§l$§c"+ FriendlyFormat.format(wrp.sellprice)) }));
                         if (buy) {
-                            confirm.setItem(40, me.gamendecat.stocks.utils.ib.mat(Material.CHEST).name("more")
-                                    .lore(new String[] { "§7Buy more than " + i + " items.", " ", "§cClick to buy more." }));
+                            confirm.setItem(40, me.gamendecat.stocks.utils.ib.mat(Material.CHEST).name("§a§lBulk Buy")
+                                    .lore(new String[] { "§7Buy more than " + i + " items.", " ", "§aClick to buy more." }));
                         } else {
-                            confirm.setItem(40, me.gamendecat.stocks.utils.ib.mat(Material.CHEST).name("more")
+                            confirm.setItem(40, me.gamendecat.stocks.utils.ib.mat(Material.CHEST).name("§c§lBulk Sell")
                                     .lore(new String[] { "§7Sell more than " + i + " items.", " ", "§cClick to sell more." }));
                         }
                         event.getWhoClicked().openInventory(confirm);
@@ -176,8 +176,8 @@ public class PlayerListeners implements Listener {
                                 Sound.BLOCK_NOTE_BLOCK_HAT, 1.0F, 1.0F);
                         }
                     }
-        } else if (event.getView().getTitle().startsWith("§7§lBuying (§a") ||
-                        event.getView().getTitle().startsWith("§7§lSelling (§a")) {
+        } else if (event.getView().getTitle().startsWith("§8§lBuying (") ||
+                        event.getView().getTitle().startsWith("§8§lSelling (")) {
             if (event.getRawSlot() > 53) return;
             if (event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
                 event.setCancelled(true);
@@ -216,10 +216,10 @@ public class PlayerListeners implements Listener {
                          for (i = 0; i < this.ab.length; i++) {
                              event.getInventory().setItem(this.ab[i],
                                      me.gamendecat.stocks.utils.ib.mat(cass.wp.handle.getType())
-                                                    .name(cass.buy ? "§a§lBuy " : "§a§lSell" + (i + 1) + (
-                                                            (i == 0) ? " stack" : " stacks"))
+                                                    .name((cass.buy ? "§a§lBuy " : "§c§lSell ") + (i + 1) + (
+                                                            (i == 1) ? " stack" : " stacks"))
                                                     .lore(new String[] {"§7"+ (cass.buy ? "Buy" : "Sell") + " stacks of selected item.", " ",
-                                                            "§7Price: §a§l$§a" + FriendlyFormat.format(price * (i + 1)),
+                                                            "§7Price: §a§l$§a" + FriendlyFormat.format(64 * price * (i + 1)),
                                                             "§aClick to " + (cass.buy ? "buy." : "sell.") }).amount(i + 1));
                                 }
                                 event.getInventory().setItem(19, me.gamendecat.stocks.utils.ib.mat(Material.RED_TERRACOTTA).name("§c§lCancel")
@@ -345,7 +345,7 @@ public class PlayerListeners implements Listener {
                         event.getInventory().clear();
                         int i = cass.wp.handle.getMaxStackSize();
                         ib ib = me.gamendecat.stocks.utils.ib.mat(Material.PLAYER_HEAD).name("§a§nYour stats")
-                                .lore("§a▌  §7Current balance: §a§l$§a" +
+                                .lore("§a▌  §7Wallet: §a§l$§a" +
                                         FriendlyFormat.format(Stocks.econ.getBalance((OfflinePlayer)event.getWhoClicked())));
                         InventoryManager.setHeadSkin((ItemStack)ib,
                                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTM2ZTk0ZjZjMzRhMzU0NjVmY2U0YTkwZjJlMjU5NzYzODllYjk3MDlhMTIyNzM1NzRmZjcwZmQ0ZGFhNjg1MiJ9fX0=");
@@ -361,7 +361,7 @@ public class PlayerListeners implements Listener {
                                     .lore(new String[] { "§aConfirm your selection." }).lore(new String[] { " " }).lore(new String[] { "§aClick to confirm." }));
                             if (cass.amount < i)
                                 event.getInventory().setItem(15,
-                                        me.gamendecat.stocks.utils.ib.mat(Material.LIME_STAINED_GLASS_PANE).name("to " + i)
+                                        me.gamendecat.stocks.utils.ib.mat(Material.LIME_STAINED_GLASS_PANE).name("§a§lSet to " + i)
                                                 .lore(new String[] { "§7Set the amount to " + i + " items.", " ", "§cClick to set." }));
                             if (cass.amount >= 11) {
                                 event.getInventory().setItem(20, this.rem10);
@@ -385,11 +385,11 @@ public class PlayerListeners implements Listener {
                             FriendlyFormat.format(cass.wp.sellprice * cass.amount)) }).amount(cass.amount));
 
                             if (cass.buy) {
-                                event.getInventory().setItem(40, me.gamendecat.stocks.utils.ib.mat(Material.CHEST).name("§a§lBuy more")
-                                        .lore(new String[] { "§aBuy more than " + i + " items.", " ", "§aClick to buy more." }));
+                                event.getInventory().setItem(40, me.gamendecat.stocks.utils.ib.mat(Material.CHEST).name("§a§lBulk Buy")
+                                        .lore(new String[] { "§7Buy more than " + i + " items.", " ", "§aClick to buy more." }));
                             } else {
-                                event.getInventory().setItem(40, me.gamendecat.stocks.utils.ib.mat(Material.CHEST).name("§a§lSell more")
-                                        .lore(new String[] { "§aSell more than " + i + " items.", " ", "§aClick to sell more." }));
+                                event.getInventory().setItem(40, me.gamendecat.stocks.utils.ib.mat(Material.CHEST).name("§c§lBulk Buy")
+                                        .lore(new String[] { "§7Sell more than " + i + " items.", " ", "§aClick to sell more." }));
                             }
                         } else {
                             int amount = event.getCurrentItem().getAmount();

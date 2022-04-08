@@ -93,6 +93,7 @@ public class PlayerListeners implements Listener {
             event.setCancelled(true);
             if (event.getCurrentItem() != null && event.getCurrentItem().hasItemMeta() &&
                     event.getCurrentItem().getItemMeta().hasDisplayName()) {
+                //todo: ""
                 if (event.getCurrentItem().getItemMeta().getDisplayName().equals("§c§lReturn to Market")) {
                     event.getWhoClicked().openInventory(InventoryManager.inv);
                     ((Player)event.getWhoClicked()).playSound(event.getWhoClicked().getLocation(),
@@ -101,6 +102,7 @@ public class PlayerListeners implements Listener {
                 }
                 MenuPage mp = PlayerManager.pages.get(event.getWhoClicked().getUniqueId());
                 Category cat = mp.c;
+
                 if (event.getCurrentItem() != null && event.getCurrentItem().hasItemMeta() &&
                         event.getCurrentItem().getItemMeta().hasDisplayName() &&
                         event.getCurrentItem().getItemMeta().getDisplayName().startsWith("§a§lNext Page")) {
@@ -109,8 +111,8 @@ public class PlayerListeners implements Listener {
                         event.getCurrentItem().getItemMeta().hasDisplayName() && event.getCurrentItem()
                         .getItemMeta().getDisplayName().startsWith("§c§lPrevious Page")) {
                     updatePage((Player)event.getWhoClicked(), mp, --mp.page);
-                } else if (cat.items.containsKey(event.getCurrentItem().getItemMeta().getDisplayName())) {
-                    ItemWrapper wrp = cat.items.get(event.getCurrentItem().getItemMeta().getDisplayName());
+                } else if (cat.items.containsKey("§f" + event.getCurrentItem().getType().name())) {
+                    ItemWrapper wrp = cat.items.get("§f" + event.getCurrentItem().getType().name());
                     boolean buy = event.getClick().isLeftClick();
                     if (buy && wrp.available == 0) {
                         event.getWhoClicked().sendMessage("§cThis item is unavailable at the moment, you have to wait");
@@ -142,18 +144,18 @@ public class PlayerListeners implements Listener {
                     if (!buy) {
                         int amount = howManyInv((Player)event.getWhoClicked(), wrp.handle);
                         double ii = wrp.sellprice * amount;
-                        confirm.setItem(4, ib.mat(Material.ENDER_CHEST).name("All").lore(
-                                new String[] { "§c▌  §7Sell all for:" + ((ii > 0.0D) ? (new StringBuilder(FriendlyFormat.format(ii))).toString() : "-") }));
+                        confirm.setItem(4, ib.mat(Material.ENDER_CHEST).name("§Sell All").lore(
+                                new String[] { "§c▌  §7Sell all for: §c§l$§c" + ((ii > 0.0D) ? (new StringBuilder(FriendlyFormat.format(ii))).toString() : "-") }));
                                 }
                                 ib ib = me.gamendecat.stocks.utils.ib.mat(Material.PLAYER_HEAD).name("§a§nYour stats")
-                                        .lore("§a▌  §7Wallet: + §a§l$§a" +
+                                        .lore("§a▌  §7Wallet: §a§l$§a" +
                                                 FriendlyFormat.format(Stocks.econ.getBalance((OfflinePlayer)event.getWhoClicked())));
                         InventoryManager.setHeadSkin((ItemStack)ib,
                                 "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTM2ZTk0ZjZjMzRhMzU0NjVmY2U0YTkwZjJlMjU5NzYzODllYjk3MDlhMTIyNzM1NzRmZjcwZmQ0ZGFhNjg1MiJ9fX0=");
                         confirm.setItem(8, ib);
                         confirm.setItem(22,
                                 me.gamendecat.stocks.utils.ib.mat(wrp.handle.getType())
-                                        .name("§f"+ FriendlyName.mat(wrp.handle.getType(), wrp.handle.getDurability()))
+                                        .name("§f"+ wrp.name)
                                                 .lore(new String[] { " ", buy ? ("§a▌ §7Buy Price: §a§l$§a" + FriendlyFormat.format(wrp.buyprice)) : (
                                                         "§c▌ §7Sell Price: §c§l$§c"+ FriendlyFormat.format(wrp.sellprice)) }));
                         if (buy) {
@@ -217,7 +219,7 @@ public class PlayerListeners implements Listener {
                              event.getInventory().setItem(this.ab[i],
                                      me.gamendecat.stocks.utils.ib.mat(cass.wp.handle.getType())
                                                     .name((cass.buy ? "§a§lBuy " : "§c§lSell ") + (i + 1) + (
-                                                            (i == 1) ? " stack" : " stacks"))
+                                                            (i == 0) ? " stack" : " stacks"))
                                                     .lore(new String[] {"§7"+ (cass.buy ? "Buy" : "Sell") + " stacks of selected item.", " ",
                                                             "§7Price: §a§l$§a" + FriendlyFormat.format(64 * price * (i + 1)),
                                                             "§aClick to " + (cass.buy ? "buy." : "sell.") }).amount(i + 1));
@@ -376,7 +378,7 @@ public class PlayerListeners implements Listener {
                             if (cass.amount + 1 <= i)
                                 event.getInventory().setItem(33, this.add1);
                             event.getInventory().setItem(22, me.gamendecat.stocks.utils.ib.mat(cass.wp.handle.getType())
-                                    .name("§f" + FriendlyName.mat(cass.wp.handle.getType(), cass.wp.handle.getDurability()))
+                                    .name("§f" + cass.wp.name)
                                             .lore(new String[] { " ",
                                                     cass.buy ? (
                                                             "§a▌ §7Buy Price: §a§l$§a" +
@@ -622,7 +624,7 @@ public class PlayerListeners implements Listener {
                 wrp.available += sold;
                 echoCall(wrp, cass.c, false);
                 Stocks.econ.depositPlayer((OfflinePlayer)p, price);
-                p.sendMessage("§aSold " + sold + "x " + ChatColor.stripColor(wrp.handle.getItemMeta().getDisplayName()) +
+                p.sendMessage("§aSold " + sold + "x " + ChatColor.stripColor(wrp.name) +
                         " for $" + FriendlyFormat.format(price) + ".");
                 p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 2.0F);
                 MenuPage mp = InventoryManager.createCatMap(p, cass.c);
@@ -643,7 +645,7 @@ public class PlayerListeners implements Listener {
                     wrp.available -= amount;
                     echoCall(wrp, cass.c, true);
                     Stocks.econ.withdrawPlayer((OfflinePlayer)p, d);
-                    p.sendMessage("§aBought " + amount + "x " + ChatColor.stripColor(wrp.handle.getItemMeta().getDisplayName()) +
+                    p.sendMessage("§aBought " + amount + "x " + ChatColor.stripColor(wrp.name) +
                             " for $" + FriendlyFormat.format(d) + ".");
                     Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(),
                             wrp.command.replaceAll("<player>", p.getName()).replaceAll("<amount>", String.valueOf(amount)));

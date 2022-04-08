@@ -4,6 +4,7 @@ import me.gamendecat.stocks.Stocks;
 import me.gamendecat.stocks.config.Category;
 import me.gamendecat.stocks.config.ConfigManager;
 import me.gamendecat.stocks.manager.InventoryManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,7 +28,21 @@ public class StocksCMD implements CommandExecutor {
                         arg0.sendMessage("§cNo permission!");
                         return true;
                     }
-                    InventoryManager.createCatMap((Player)arg0, cat);
+
+                    Player player;
+                    if(arg3.length == 2) {
+                        String playername = arg3[1];
+                        if(Bukkit.getPlayer(playername) == null) {
+                            arg0.sendMessage("Player doesn't exist.");
+                            return true;
+                        }
+
+                        player = Bukkit.getPlayer(playername);
+                    }else {
+                        player = (Player) arg0;
+                    }
+
+                    InventoryManager.createCatMap(player, cat);
                     return true;
                 }
             }

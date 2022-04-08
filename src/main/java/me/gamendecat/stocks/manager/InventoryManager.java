@@ -92,7 +92,7 @@ public class InventoryManager {
     public static MenuPage createCatMap(Player p, Category c) {
         Inventory inv = Bukkit.createInventory(null, 54, "§n" + ChatColor.stripColor(c.name) + " - 1/" + c.pages);
                 inv.setContents(ex.getContents());
-        ib ib = me.gamendecat.stocks.utils.ib.mat(Material.PLAYER_HEAD).name("§a§nYour stats").lore(new String[] { "§a▌ §7Current balance: §a§l$§a"+ FriendlyFormat.format(Stocks.econ.getBalance(p)) });
+        ib ib = me.gamendecat.stocks.utils.ib.mat(Material.PLAYER_HEAD).name("§a§nYour stats").lore(new String[] { "§a▌ §7Wallet: §a§l$§a"+ FriendlyFormat.format(Stocks.econ.getBalance(p)) });
                 setHeadSkin((ItemStack)ib, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTM2ZTk0ZjZjMzRhMzU0NjVmY2U0YTkwZjJlMjU5NzYzODllYjk3MDlhMTIyNzM1NzRmZjcwZmQ0ZGFhNjg1MiJ9fX0=");
         inv.setItem(8, (ItemStack)ib);
         MenuPage mp = new MenuPage(c, inv);

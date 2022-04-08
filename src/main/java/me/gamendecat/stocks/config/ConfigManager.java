@@ -78,6 +78,7 @@ public class ConfigManager {
                     }
                     Bukkit.getConsoleSender().sendMessage("" + m + " to category " + s + "...");
                     ItemWrapper wrapper = new ItemWrapper();
+                    wrapper.name = sec.getString(l + ".name").replaceAll("&", "§");
                     wrapper.available = sec.getInt(String.valueOf(l) + ".initial_amount") / 2;
                     wrapper.sellprice = sec.getDouble(String.valueOf(l) + ".sell_price");
                     wrapper.buyprice = sec.getDouble(String.valueOf(l) + ".buy_price");
@@ -88,14 +89,13 @@ public class ConfigManager {
                     if (sec.contains(String.valueOf(l) + ".command"))
                         wrapper.command = sec.getString(String.valueOf(l) + ".command");
                     int data = sec.contains(String.valueOf(l) + ".data") ? sec.getInt(String.valueOf(l) + ".data") : 0;
-                    String name = FriendlyName.mat(m, (short)data);
-                    wrapper.handle = (ItemStack)ib.mat(m).data(data).name("§f" + name)
+                    wrapper.handle = (ItemStack)ib.mat(m).data(data).name("§f" + wrapper.name)
                             .lore(new String[] { "§a▌  §7Buy Price: §a§l§a" + FriendlyFormat.format(wrapper.buyprice), " ",
                             (wrapper.command == null) ? ("§c▌  §7Sell Price: §a§l§a" + FriendlyFormat.format(wrapper.sellprice)) :
                     "§7Selling unavailable",
                     " ", "§a§l◄ §aLeft click to buy", "§c§l► §cRight click to sell",
                     "§9▥ Total Stock: §a" + wrapper.available + "/" + wrapper.maxamount });
-                    category.items.put("§f"+ name, wrapper);
+                    category.items.put("§f"+ m, wrapper);
                 }
             }
             cat.add(category);
